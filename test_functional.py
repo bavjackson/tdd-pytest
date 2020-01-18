@@ -1,14 +1,3 @@
-from selenium import webdriver
-import pytest
-
-
-@pytest.fixture()
-def browser():
-    driver = webdriver.Firefox()
-    yield driver
-    driver.quit()
-
-
 def test_can_start_a_list_and_retrieve_it_later(browser):
     # Edith has heard about a cool new online to-do app. She goes
     # to check out its homepage
