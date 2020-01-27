@@ -44,11 +44,18 @@ steps:
 
 - script: |
     pushd '$(projectRoot)'
-    pytest lists
-  displayName: 'Run tests'
+    pip install pytest-cov
+    pytest lists --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+  displayName: 'Run tests with pytest'
 
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: "**/TEST-*.xml"
     testRunTitle: 'Python $(PYTHON_VERSION)'
   condition: succeededOrFailed()
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
