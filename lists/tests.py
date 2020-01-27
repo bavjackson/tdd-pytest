@@ -10,5 +10,5 @@ from pytest_django.asserts import assertTemplateUsed
 def test_home_page_returns_correct_html(client):
     response = client.get("/")
 
-    assertTemplateUsed(response, "home.html")
     print('the test is running')
+    assertTemplateUsed(response, "home.html")
