@@ -12,3 +12,6 @@ def test_home_page_returns_correct_html(client):
 
     print('the test is running')
     assertTemplateUsed(response, "home.html")
+
+def test_azure_pipeline_fails_with_bad_test():
+    assert 0
