@@ -2,6 +2,8 @@ from django.urls import resolve
 from django.http import HttpRequest
 from django.template.loader import render_to_string
 
+import pytest
+
 from lists.views import home_page
 
 from pytest_django.asserts import assertTemplateUsed
