@@ -49,7 +49,7 @@ steps:
       curl -s -L "$url" | tar -xz
       chmod +x geckodriver
       sudo mv geckodriver "$INSTALL_DIR"
-      apt-get install xvfb firefox
+      sudo apt-get install xvfb firefox
     displayName: "Install browser testing tools"
 
   - script: |
