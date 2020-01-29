@@ -43,26 +43,10 @@ steps:
     displayName: "Install prerequisites"
 
   - script: |
-      INSTALL_DIR="/usr/local/bin"
-      json=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest)
-      url=$(echo "$json" | jq -r '.assets[].browser_download_url | select(contains("linux64"))')
-      curl -s -L "$url" | tar -xz
-      chmod +x geckodriver
-      sudo mv geckodriver "$INSTALL_DIR"
-      sudo apt-get install xvfb firefox
-    displayName: "Install browser testing tools"
-
-  - script: |
       pushd '$(projectRoot)'
       pip install pytest-cov
       pytest -v -m "not functest" --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
     displayName: "Run unit tests with pytest"
-
-  - script: |
-      pushd '$(projectRoot)'
-      pip install pytest-xvfb
-      pytest -v -m functest
-    displayName: "Run functional tests"
 
   - task: PublishTestResults@2
     inputs:
