@@ -49,12 +49,20 @@ steps:
       curl -s -L "$url" | tar -xz
       chmod +x geckodriver
       sudo mv geckodriver "$INSTALL_DIR"
+      apt-get install xvfb firefox
+    displayName: "Install browser testing tools"
 
   - script: |
       pushd '$(projectRoot)'
       pip install pytest-cov
-      pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
-    displayName: "Run tests with pytest"
+      pytest -v -m "not functest" --no-xvfb --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+    displayName: "Run unit tests with pytest"
+
+  - script: |
+      pushd '$(projectRoot)'
+      pip install pytest-xvfb
+      pytest -v -m functest
+    displayName: "Run functional tests"
 
   - task: PublishTestResults@2
     inputs:
