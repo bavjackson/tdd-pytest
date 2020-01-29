@@ -45,7 +45,7 @@ steps:
   - script: |
       pushd '$(projectRoot)'
       pip install pytest-cov
-      pytest -v -m "not functest" --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+      pytest --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
     displayName: "Run tests with pytest"
 
   - task: PublishTestResults@2
