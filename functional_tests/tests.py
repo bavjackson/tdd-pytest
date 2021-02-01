@@ -5,10 +5,10 @@ import time
 
 
 @pytest.mark.functest
-def test_can_start_a_list_and_retrieve_it_later(browser):
+def test_can_start_a_list_and_retrieve_it_later(live_server, browser):
     # Edith has heard about a cool new online to-do app. She goes
     # to check out its homepage
-    browser.get("http://localhost:8000")
+    browser.get(str(live_server))
 
     # She notices the page title and header mention to-do lists
     assert "To-Do" in browser.title
