@@ -16,13 +16,26 @@ def test_home_page_returns_correct_html(client):
     assertTemplateUsed(response, "home.html")
 
 
-def test_can_save_a_POST_requrest(client):
+def test_can_save_a_POST_request(client):
+    item_text = "A new list item"
+    client.post("/", data={"item_text": item_text})
+
+    assert Item.objects.count() == 1
+    new_item = Item.objects.first()
+    assert new_item.text == item_text
+
+
+def test_redirects_after_POST(client):
     response = client.post("/", data={"item_text": "A new list item"})
-    assert "A new list item" in response.content.decode()
-    assertTemplateUsed(response, "home.html")
+    assert response.status_code == 302
+    assert response["location"] == "/"
 
 
-@pytest.mark.django_db
+def test_only_saves_items_when_necessary(client):
+    client.get("/")
+    assert Item.objects.count() == 0
+
+
 def test_saving_and_retrieving_items():
     first_item = Item()
     first_item.text = "The first (ever) list item"
@@ -36,6 +49,16 @@ def test_saving_and_retrieving_items():
     assert saved_items.count() == 2
     assert saved_items[0].text == "The first (ever) list item"
     assert saved_items[1].text == "Item the second"
+
+
+def test_displays_all_list_items(client):
+    Item.objects.create(text="itemey 1")
+    Item.objects.create(text="itemey 2")
+
+    response = client.get("/")
+
+    assert "itemey 1" in response.content.decode()
+    assert "itemey 2" in response.content.decode()
 
 
 @pytest.mark.xfail
