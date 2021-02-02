@@ -60,14 +60,14 @@ def test_multiple_users_can_start_lists_at_different_urls(live_server, driver_fa
 
     # she notices that her list has a unique URL
     edith_list_url = browser.current_url
-    assert re.match("/lists/.+", edith_list_url)
+    assert re.search(r"/lists/.+", edith_list_url)
 
     # Now a new user, Francis, comes along to the site.
 
     ## Use a new browser session to make sure no information
     ## of Edith's is coming through from cookies etc...
     browser.quit()
-    broswer = driver_factory()
+    browser = driver_factory()
 
     # Francis visits the home page. There is no sign of Edith's
     # list
@@ -85,7 +85,7 @@ def test_multiple_users_can_start_lists_at_different_urls(live_server, driver_fa
 
     # Francis gets his own unique URL
     francis_list_url = browser.current_url
-    assert re.match("/lists/.+", francis_list_url)
+    assert re.search(r"/lists/.+", francis_list_url)
 
     # Again, there is no trace of Edith's list
     page_text = browser.find_element_by_tag_name("body").text
