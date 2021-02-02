@@ -1,11 +1,6 @@
-from django.urls import resolve
-from django.http import HttpRequest
-from django.template.loader import render_to_string
-from pytest_django.asserts import assertTemplateUsed, assertContains
-
 import pytest
+from pytest_django.asserts import assertTemplateUsed, assertContains, assertRedirects
 
-from lists.views import home_page
 from lists.models import Item
 
 
@@ -13,26 +8,6 @@ from lists.models import Item
 def test_home_page_returns_correct_html(client):
     response = client.get("/")
     assertTemplateUsed(response, "home.html")
-
-
-def test_can_save_a_POST_request(client):
-    item_text = "A new list item"
-    client.post("/", data={"item_text": item_text})
-
-    assert Item.objects.count() == 1
-    new_item = Item.objects.first()
-    assert new_item.text == item_text
-
-
-def test_redirects_after_POST(client):
-    response = client.post("/", data={"item_text": "A new list item"})
-    assert response.status_code == 302
-    assert response["location"] == "/lists/the-only-list-in-the-world/"
-
-
-def test_only_saves_items_when_necessary(client):
-    client.get("/")
-    assert Item.objects.count() == 0
 
 
 # Item model
@@ -65,3 +40,18 @@ def test_displays_all_items(client):
 
     assertContains(response, "itemey 1")
     assertContains(response, "itemey 2")
+
+
+# New list test
+def test_can_save_a_POST_request(client):
+    item_text = "A new list item"
+    client.post("/lists/new", data={"item_text": item_text})
+
+    assert Item.objects.count() == 1
+    new_item = Item.objects.first()
+    assert new_item.text == item_text
+
+
+def test_redirects_after_POST(client):
+    response = client.post("/lists/new", data={"item_text": "A new list item"})
+    assertRedirects(response, "/lists/the-only-list-in-the-world/")
