@@ -48,11 +48,6 @@ steps:
       pytest -v -m "not functest" --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
     displayName: "Run unit tests with pytest"
   
-  - script: |
-      pushd '$(projectRoot)'
-      pytest -v -m functest
-    displayName: "Run functional tests"
-
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: "**/TEST-*.xml"
