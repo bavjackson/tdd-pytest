@@ -3,6 +3,7 @@ geckodriver.log
 geckodriver.exe
 .vscode/
 env/
+/static
 
 *.py[cod]
 __pycache__
