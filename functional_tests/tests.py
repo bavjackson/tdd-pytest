@@ -104,7 +104,7 @@ def test_layout_and_stying(live_server, selenium):
     # She notices the input box is nicely centered
     inputbox = selenium.find_element_by_id("id_new_item")
     assert inputbox.location["x"] + inputbox.size["width"] / 2 == pytest.approx(
-        512, rel=10
+        512, abs=10
     )
 
     # She starts a new list and sees the input is nicely
@@ -114,7 +114,7 @@ def test_layout_and_stying(live_server, selenium):
     wait_for_row_in_list_table(selenium, "1: testing")
     inputbox = selenium.find_element_by_id("id_new_item")
     assert inputbox.location["x"] + inputbox.size["width"] / 2 == pytest.approx(
-        512, rel=10
+        512, abs=10
     )
 
 
