@@ -4,6 +4,7 @@ geckodriver.exe
 .vscode/
 env/
 /static
+.env
 
 *.py[cod]
 __pycache__
