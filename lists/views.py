@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 
 from lists.models import List, Item
 
+from django.conf import settings
+
 # Create your views here
 def home_page(request):
+    print(settings.DEBUG)
     return render(request, "home.html")
 
 
