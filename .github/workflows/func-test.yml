@@ -40,6 +40,8 @@ jobs:
         sudo apt install firefox
         chmod +x ./scripts/InstallChrome.sh
         ./scripts/InstallChrome.sh
+    - name: Run migrations
+      run: python manage.py migrate
     - name: Run Tests
       run: |
         pytest -m functest
