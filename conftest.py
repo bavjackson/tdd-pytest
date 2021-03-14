@@ -2,10 +2,13 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.support.events import EventFiringWebDriver
 
+options = webdriver.FirefoxOptions()
+options.headless = True
+
 
 @pytest.fixture()
 def browser():
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(options=options)
     yield driver
     driver.quit()
 
@@ -47,3 +50,15 @@ def driver(driver_factory):
 @pytest.fixture(autouse=True)
 def enable_db_access_for_all_tests(db):
     pass
+
+
+@pytest.fixture
+def chrome_options(chrome_options, pytestconfig):
+    chrome_options.add_argument("--headless")
+    return chrome_options
+
+
+@pytest.fixture
+def firefox_options(firefox_options, pytestconfig):
+    firefox_options.set_headless(True)
+    return firefox_options
