@@ -2,9 +2,9 @@ name: Functional tests
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "*" ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         chmod +x ./scripts/InstallChrome.sh
-        ./scripts/InstallChrome.shd
+        ./scripts/InstallChrome.sh
     - name: Run Tests
       run: |
         pytest -m functest
