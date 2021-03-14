@@ -1,11 +1,9 @@
-import re
-from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import pytest
-
 import time
+import re
 
-MAX_WAIT = 10
+from .base import wait_for_row_in_list_table
 
 
 @pytest.mark.functest
@@ -93,41 +91,3 @@ def test_multiple_users_can_start_lists_at_different_urls(live_server, driver_fa
     assert "make a fly" not in page_text
 
     # Satisfied, they both go back to sleep
-
-
-@pytest.mark.functest
-def test_layout_and_stying(live_server, selenium):
-    # Edith goes to the home page
-    selenium.get(str(live_server))
-    selenium.set_window_size(1024, 768)
-
-    # She notices the input box is nicely centered
-    inputbox = selenium.find_element_by_id("id_new_item")
-    assert inputbox.location["x"] + inputbox.size["width"] / 2 == pytest.approx(
-        512, abs=10
-    )
-
-    # She starts a new list and sees the input is nicely
-    # centered there too
-    inputbox.send_keys("testing")
-    inputbox.send_keys(Keys.ENTER)
-    wait_for_row_in_list_table(selenium, "1: testing")
-    inputbox = selenium.find_element_by_id("id_new_item")
-    assert inputbox.location["x"] + inputbox.size["width"] / 2 == pytest.approx(
-        512, abs=10
-    )
-
-
-# Helpers
-def wait_for_row_in_list_table(browser, row_text):
-    start_time = time.time()
-    while True:
-        try:
-            table = browser.find_element_by_id("id_list_table")
-            rows = table.find_elements_by_tag_name("tr")
-            assert row_text in [row.text for row in rows]
-            return
-        except (AssertionError, WebDriverException) as e:
-            if time.time() - start_time > MAX_WAIT:
-                raise e
-            time.sleep(0.5)
