@@ -26,6 +26,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        sudo apt install firefox
         chmod +x ./scripts/InstallChrome.sh
         ./scripts/InstallChrome.sh
     - name: Run Tests
